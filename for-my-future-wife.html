@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For My Future Wife 🐻</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Pacifico&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: linear-gradient(160deg, #fff0f5 0%, #fff8f0 50%, #fff0f8 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(circle, #ffb6c155 1px, transparent 1px),
+        radial-gradient(circle, #ff7eb322 1px, transparent 1px);
+      background-size: 40px 40px, 70px 70px;
+      background-position: 0 0, 20px 20px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Stage ── */
+    .stage {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+      width: 100%;
+      max-width: 560px;
+    }
+
+    /* ── Title ── */
+    .title {
+      font-family: 'Pacifico', cursive;
+      font-size: clamp(1.8rem, 5vw, 2.6rem);
+      color: #ff3366;
+      text-align: center;
+      text-shadow: 2px 3px 0 #ffb6c1, 4px 6px 0 #ffe4ec;
+      line-height: 1.3;
+      width: 100%;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      color: #c06080;
+      text-align: center;
+      margin-top: -1.2rem;
+      opacity: 0.8;
+      width: 100%;
+    }
+
+    /* ── Bear scene ── */
+    .scene {
+      width: 100%;
+      height: 180px; /* taller so sign has room above */
+      position: relative;
+      overflow: visible; /* let the sign be visible above */
+    }
+
+    .bear-wrap {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    @keyframes run-right {
+      0%   { left: 10%; transform: none; }
+      50%  { left: 82%; transform: none; }
+      100% { left: 10%; transform: none; }
+    }
+    @keyframes run-right2 {
+      0%   { left: 10%; transform: none; }
+      50%  { left: 82%; transform: none; }
+      100% { left: 10%; transform: none; }
+    }
+    .bear-wrap.running  { animation: run-right  2.5s ease-in-out forwards; }
+    .bear-wrap.running2 { animation: run-right2 2.5s ease-in-out forwards; }
+
+    @keyframes idle-bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(-6px); }
+    }
+    .bear-wrap.idle { animation: idle-bounce 2s ease-in-out infinite; }
+
+    /* ── SVG Bear ── */
+    .bear {
+      width: 100px;
+      height: 110px;
+      display: block;
+      filter: drop-shadow(0 4px 8px #c0607040);
+    }
+
+    /* ── "Yeaaaah" bubble above bear while running ── */
+    .yeah-bubble {
+      display: none;
+      position: absolute;
+      top: -44px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #fff;
+      border: 2.5px solid #ff3366;
+      border-radius: 20px;
+      padding: 5px 12px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 900;
+      color: #ff3366;
+      white-space: nowrap;
+      box-shadow: 2px 3px 0 #ffb6c1;
+      pointer-events: none;
+    }
+    .yeah-bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -9px;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-top-color: #ff3366;
+    }
+    .bear-wrap.running  .yeah-bubble,
+    .bear-wrap.running2 .yeah-bubble { display: block; }
+
+    /* ── Final sign (step 2) ── */
+    .sign {
+      display: none;
+      position: absolute;
+      top: -56px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #fff;
+      border: 3px solid #ff3366;
+      border-radius: 10px;
+      padding: 6px 12px;
+      font-size: 0.72rem;
+      font-weight: 900;
+      color: #ff3366;
+      white-space: nowrap;
+      text-align: center;
+      box-shadow: 2px 3px 0 #ffb6c1;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .sign::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-top-color: #ff3366;
+    }
+    @keyframes pop-in {
+      0%   { transform: translateX(-50%) scale(0); opacity: 0; }
+      100% { transform: translateX(-50%) scale(1); opacity: 1; }
+    }
+    .sign.visible { display: block; animation: pop-in 0.4s cubic-bezier(.36,1.6,.5,1) forwards; }
+
+    /* ── Buttons ── */
+    .btn {
+      display: block;
+      width: fit-content;
+      margin: 0 auto;
+      padding: 1rem 2.2rem;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 5px 0 #c0304055, 0 8px 24px #ff336620;
+      background: linear-gradient(135deg, #ff7eb3, #ff3366);
+      color: white;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 60%; height: 100%;
+      background: linear-gradient(90deg, transparent, #ffffff30, transparent);
+      transition: left 0.4s;
+    }
+    .btn:hover::before { left: 150%; }
+    .btn:hover  { transform: translateY(-3px); box-shadow: 0 8px 0 #c0304055, 0 12px 28px #ff336630; }
+    .btn:active { transform: translateY(2px);  box-shadow: 0 2px 0 #c0304055; }
+
+    .btn-2 {
+      background: linear-gradient(135deg, #a855f7, #ec4899);
+      box-shadow: 0 5px 0 #7e22ce55, 0 8px 24px #a855f720;
+    }
+    .btn-2:hover  { box-shadow: 0 8px 0 #7e22ce55, 0 12px 28px #a855f730; }
+    .btn-2:active { box-shadow: 0 2px 0 #7e22ce55; }
+
+    .hidden { display: none !important; }
+
+    /* ── Big message ── */
+    .big-msg {
+      display: block;
+      width: 100%;
+      text-align: center;
+      font-family: 'Pacifico', cursive;
+      font-size: clamp(1.1rem, 3.5vw, 1.5rem);
+      color: #7c3aed;
+      text-shadow: 1px 2px 0 #e9d5ff;
+      line-height: 1.6;
+      animation: pop-in-simple 0.5s cubic-bezier(.36,1.6,.5,1) both;
+    }
+    @keyframes pop-in-simple {
+      0%   { transform: scale(0); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* ── Hearts ── */
+    .hearts-container {
+      position: fixed;
+      bottom: 0; left: 0;
+      width: 100%;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .heart-balloon {
+      position: absolute;
+      bottom: -60px;
+      animation: float-up linear forwards;
+      opacity: 0.9;
+    }
+    @keyframes float-up {
+      0%   { transform: translateY(0)      rotate(0deg)   scale(0.5); opacity: 0; }
+      10%  { transform: translateY(-8vh)   rotate(-5deg)  scale(1);   opacity: 1; }
+      50%  { transform: translateY(-55vh)  rotate(5deg)   scale(1.1); opacity: 0.9; }
+      100% { transform: translateY(-115vh) rotate(-3deg)  scale(0.9); opacity: 0; }
+    }
+
+    /* ── Leg & arm animations ── */
+    .leg-l, .leg-r { transform-origin: 50px 85px; }
+    .bear-wrap.running  .leg-l,
+    .bear-wrap.running2 .leg-l { animation: leg-kick-l 0.3s linear infinite; }
+    .bear-wrap.running  .leg-r,
+    .bear-wrap.running2 .leg-r { animation: leg-kick-r 0.3s linear infinite; }
+    @keyframes leg-kick-l { 0%,100%{transform:rotate(-20deg)}50%{transform:rotate(20deg)} }
+    @keyframes leg-kick-r { 0%,100%{transform:rotate(20deg)} 50%{transform:rotate(-20deg)} }
+
+    .arm-l { transform-origin: 30px 58px; }
+    .arm-r { transform-origin: 70px 58px; }
+    .bear-wrap.running2 .arm-l { animation: arm-wave-l 0.3s linear infinite; }
+    .bear-wrap.running2 .arm-r { animation: arm-wave-r 0.3s linear infinite; }
+    @keyframes arm-wave-l { 0%,100%{transform:rotate(20deg)} 50%{transform:rotate(-40deg)} }
+    @keyframes arm-wave-r { 0%,100%{transform:rotate(-20deg)}50%{transform:rotate(40deg)} }
+  </style>
+</head>
+<body>
+
+<div class="stage">
+
+  <div class="title">For my future wife 🌸</div>
+  <p class="subtitle">A little something, just for you ✨</p>
+
+  <!-- Bear scene -->
+  <div class="scene">
+    <div class="bear-wrap idle" id="bearWrap">
+
+      <!-- Yeaaah bubble (shows while running) -->
+      <div class="yeah-bubble">Yeaaaaaaah ! 🎉</div>
+
+      <!-- Final sign (shows after step 2) -->
+      <div class="sign" id="sign">so I am the luckiest man<br>on the world !!!! 🌍💖</div>
+
+      <!-- Bear SVG -->
+      <svg class="bear" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="28" cy="28" r="14" fill="#c68642"/>
+        <circle cx="72" cy="28" r="14" fill="#c68642"/>
+        <circle cx="28" cy="28" r="9"  fill="#d4956a"/>
+        <circle cx="72" cy="28" r="9"  fill="#d4956a"/>
+        <ellipse cx="50" cy="78" rx="28" ry="30" fill="#c68642"/>
+        <circle cx="50" cy="46" r="26" fill="#c68642"/>
+        <ellipse cx="50" cy="52" rx="14" ry="10" fill="#d4956a"/>
+        <circle cx="41" cy="41" r="4" fill="#3d2015"/>
+        <circle cx="59" cy="41" r="4" fill="#3d2015"/>
+        <circle cx="42.5" cy="39.5" r="1.5" fill="white"/>
+        <circle cx="60.5" cy="39.5" r="1.5" fill="white"/>
+        <ellipse cx="50" cy="49" rx="4" ry="3" fill="#d4706a"/>
+        <path d="M44 53 Q50 59 56 53" stroke="#3d2015" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <ellipse cx="37" cy="50" rx="5" ry="3" fill="#ff99aa" opacity="0.4"/>
+        <ellipse cx="63" cy="50" rx="5" ry="3" fill="#ff99aa" opacity="0.4"/>
+        <ellipse cx="50" cy="80" rx="16" ry="18" fill="#d4956a"/>
+        <ellipse cx="24" cy="65" rx="9" ry="14" fill="#c68642" class="arm-l"/>
+        <ellipse cx="76" cy="65" rx="9" ry="14" fill="#c68642" class="arm-r"/>
+        <ellipse cx="38" cy="102" rx="10" ry="13" fill="#c68642" class="leg-l"/>
+        <ellipse cx="62" cy="102" rx="10" ry="13" fill="#c68642" class="leg-r"/>
+        <text x="50" y="84" text-anchor="middle" font-size="14" id="bellyHeart">🤍</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Button 1 -->
+  <button class="btn" id="btn1" onclick="step1()">If you love me, click here 💖</button>
+
+  <!-- Button 2 (hidden) -->
+  <button class="btn btn-2 hidden" id="btn2" onclick="step2()">If you are happy, click here ✨</button>
+
+  <!-- Big final message (hidden) -->
+  <div class="big-msg hidden" id="bigMsg">
+    🌸 You made me the happiest bear<br>in the whole universe 🌙💫
+  </div>
+
+</div>
+
+<div class="hearts-container" id="heartsContainer"></div>
+
+<script>
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+
+  function playDing(type = 'success') {
+    const ctx = new AudioCtx();
+    const notes = type === 'success'
+      ? [523.25, 659.25, 783.99, 1046.5]
+      : [659.25, 880, 1108.7, 1318.5];
+
+    notes.forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      const t = ctx.currentTime + i * 0.12;
+      gain.gain.setValueAtTime(0, t);
+      gain.gain.linearRampToValueAtTime(0.35, t + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.28);
+      osc.start(t); osc.stop(t + 0.3);
+    });
+
+    if (type === 'sparkle') {
+      for (let i = 0; i < 6; i++) {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.type = 'triangle';
+        osc.frequency.value = 1200 + Math.random() * 800;
+        const t = ctx.currentTime + Math.random() * 0.4;
+        gain.gain.setValueAtTime(0, t);
+        gain.gain.linearRampToValueAtTime(0.12, t + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.2);
+        osc.start(t); osc.stop(t + 0.25);
+      }
+    }
+  }
+
+  const bearWrap = document.getElementById('bearWrap');
+  const bellyHeart = document.getElementById('bellyHeart');
+
+  function runBear(variant, onDone) {
+    bearWrap.classList.remove('idle', 'running', 'running2');
+    void bearWrap.offsetWidth;
+    bearWrap.classList.add(variant === 1 ? 'running' : 'running2');
+    setTimeout(() => {
+      bearWrap.classList.remove('running', 'running2');
+      bearWrap.classList.add('idle');
+      bearWrap.style.left = '50%';
+      bearWrap.style.transform = 'translateX(-50%)';
+      if (onDone) onDone();
+    }, 2600);
+  }
+
+  function step1() {
+    document.getElementById('btn1').disabled = true;
+    bellyHeart.textContent = '❤️';
+    playDing('success');
+    runBear(1, () => {
+      document.getElementById('btn1').classList.add('hidden');
+      const btn2 = document.getElementById('btn2');
+      btn2.classList.remove('hidden');
+    });
+  }
+
+  function step2() {
+    document.getElementById('btn2').disabled = true;
+    playDing('sparkle');
+    runBear(2, () => {
+      document.getElementById('sign').classList.add('visible');
+      document.getElementById('btn2').classList.add('hidden');
+      document.getElementById('bigMsg').classList.remove('hidden');
+      launchHearts();
+    });
+  }
+
+  const HEARTS = ['❤️','🩷','💖','💗','💓','💝','💕','🌸'];
+
+  function launchHearts() {
+    const container = document.getElementById('heartsContainer');
+    let count = 0;
+    const interval = setInterval(() => {
+      if (count >= 40) { clearInterval(interval); return; }
+      const el = document.createElement('div');
+      el.className = 'heart-balloon';
+      el.textContent = HEARTS[Math.floor(Math.random() * HEARTS.length)];
+      const leftPct  = 5 + Math.random() * 90;
+      const duration = 3.5 + Math.random() * 3;
+      const delay    = Math.random() * 2.5;
+      const size     = 1.2 + Math.random() * 1.8;
+      el.style.left = leftPct + '%';
+      el.style.fontSize = size + 'rem';
+      el.style.animationDuration = duration + 's';
+      el.style.animationDelay    = delay + 's';
+      container.appendChild(el);
+      setTimeout(() => el.remove(), (duration + delay + 0.5) * 1000);
+      count++;
+    }, 120);
+  }
+</script>
+</body>
+</html>
